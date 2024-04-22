@@ -34,7 +34,6 @@ import {
 } from '../../utils/geometrics.ts';
 import './CanvasPanel.scss';
 import { modalData } from '../../assets/staticData.ts';
-import { ref, onMounted, onBeforeUnmount } from 'vue';
 import Button from '../../components/Button/Button.vue';
 import Modal from '../../components/Modal/Modal.vue';
 
@@ -51,7 +50,7 @@ export default {
             selectedPoints: [] as { x: number, y: number }[],
             parallelogramArea: 0,
             circleArea: 0,
-            canvas: null as HTMLCanvasElement | null,
+            canvas: {} as HTMLCanvasElement,
             ctx: null as CanvasRenderingContext2D | null,
             isDragging: false,
             draggedPointIndex: null as number | null,
@@ -88,7 +87,7 @@ export default {
             this.showModal = !this.showModal;
         },
         handleClick(event: MouseEvent) {
-            if (this.selectedPoints.length < 3) {
+            if (this.selectedPoints.length < 3 && this.ctx) {
                 // Handle click event to select points
                 const rect = this.canvas.getBoundingClientRect();
                 const x = event.clientX - rect.left;
@@ -122,7 +121,7 @@ export default {
         },
         clearCanvas() {
             // Clear the canvas
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.ctx?.clearRect(0, 0, this.canvas.width, this.canvas.height);
         },
         handleMouseDown(event: MouseEvent) {
             // Handle mouse down event for dragging points
@@ -139,7 +138,7 @@ export default {
             }
         },
         handleMouseMove(event: MouseEvent) {
-            if (this.isDragging && this.draggedPointIndex !== null) {
+            if (this.isDragging && this.draggedPointIndex !== null && this.ctx) {
                 // Handle mouse move event for dragging points
                 const rect = this.canvas.getBoundingClientRect();
                 const x = event.clientX - rect.left;
@@ -148,7 +147,7 @@ export default {
                 this.ctx.save(); // Save the current canvas state
                 this.selectedPoints[this.draggedPointIndex] = { x, y };
                 this.clearCanvas();
-                this.selectedPoints.forEach((point, index) => drawPoint(this.ctx, point.x, point.y));
+                this.selectedPoints.forEach((point) => drawPoint(this.ctx as CanvasRenderingContext2D, point.x, point.y));
                 drawParallelogram(this.ctx, this.selectedPoints);
                 drawCircle(this.ctx, this.selectedPoints);
                 this.calculateAreas();
