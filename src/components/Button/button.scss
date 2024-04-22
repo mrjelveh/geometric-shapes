@@ -1,0 +1,39 @@
+.button {
+  $default-color: transparent;
+  $primary-color: #1abc9c;
+  $secondary-color: #e74c3c;
+  $disabled-color: #ccc;
+
+
+  padding: 10px 20px;
+  border: none;
+  background-color: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+
+
+  &--primary {
+    background-color: $primary-color;
+    color: white;
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+
+  &--secondary {
+    background-color: $secondary-color;
+    color: white;
+    &:hover {
+      background-color: darken($secondary-color, 10%);
+    }
+  }
+
+  &--disabled {
+    background-color: $disabled-color;
+    color: white;
+    cursor: not-allowed;
+    &:hover {
+      background-color: $disabled-color;
+    }
+  }
+}
