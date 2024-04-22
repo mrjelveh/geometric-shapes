@@ -1,16 +1,15 @@
+$default-color: transparent;
+$primary-color: #1abc9c;
+$secondary-color: #e74c3c;
+$disabled-color: #ccc;
+
 .button {
-  $default-color: transparent;
-  $primary-color: #1abc9c;
-  $secondary-color: #e74c3c;
-  $disabled-color: #ccc;
-
-
   padding: 10px 20px;
   border: none;
-  background-color: transparent;
+  background-color: default-color;
   border-radius: 6px;
   cursor: pointer;
-
+  font-size: 16px;
 
   &--primary {
     background-color: $primary-color;

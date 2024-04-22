@@ -10,8 +10,7 @@
     </div>
 </template>
 
-<script>
-import { h } from 'vue';
+<script lang="ts">
 import './modal.scss';
 export default {
     name: 'Modal',
