@@ -19,3 +19,4 @@ This project uses npm for package management. Here are some commands you can use
 - A better styling structure (using a theme and pallete throughout the project).
 - Utilizing loose coupling structure for canvas component to make it more modular
 - Adding test(unit/e2e) to the project
+- using [D3-Zoom](https://d3js.org/d3-zoom) to pan, zoom-in and zoom-out in the canvas
