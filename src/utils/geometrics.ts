@@ -64,11 +64,13 @@ export function drawPointCoordinates(
   ctx.font = "12px Roboto";
   ctx.fillStyle = "white";
   const text = `(${x.toFixed(0)}, ${y.toFixed(0)})`;
-  const offsetX = 5; // Adjust this value to position the text
-  const offsetY = 15; // Adjust this value to position the text
+  // Calculate the offset of the text based on the point's position and avoiding overlapping text
+  const offsetX = x > ctx.canvas.width / 2 ? -ctx.measureText(text).width - 5 : 5;
+  const offsetY = y < ctx.canvas.height / 4 ? 25 : -5;
+  
 
-  // Draw the text slightly above and to the right of the point
-  ctx.fillText(text, x + offsetX, y - offsetY);
+  // Draw the text slightly above and to the right/left of the point
+  ctx.fillText(text, x + offsetX, y + offsetY);
   ctx.restore();
 }
 
