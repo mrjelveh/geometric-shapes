@@ -43,8 +43,9 @@ export function drawParallelogram(
   ctx.moveTo(p1.x, p1.y);
   ctx.lineTo(p2.x, p2.y);
   ctx.lineTo(p3.x, p3.y);
+  ctx.lineTo(p1.x + (p3.x - p2.x), p1.y + (p3.y - p2.y));
   ctx.closePath();
-  ctx.strokeStyle = "#3498db";
+  ctx.strokeStyle = '#3498db';
   ctx.stroke();
   ctx.restore();
 }
@@ -85,8 +86,9 @@ export function drawCircle(
 ): void {
   const [p1, p2, p3] = selectedPoints;
   const parallelogramArea = calculateParallelogramArea(p1, p2, p3);
-  const centerX = (p1.x + p2.x + p3.x) / 3;
-  const centerY = (p1.y + p2.y + p3.y) / 3;
+  const p4 = { x: p1.x + p3.x - p2.x, y: p1.y + p3.y - p2.y };
+  const centerX = (p1.x + p2.x + p3.x + p4.x) / 4;
+  const centerY = (p1.y + p2.y + p3.y + p4.y) / 4;
   const radius = Math.sqrt(parallelogramArea / Math.PI);
 
   ctx.beginPath();
@@ -107,11 +109,11 @@ export function calculateParallelogramArea(
   p2: Point,
   p3: Point
 ): number {
-  const a = Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
-  const b = Math.sqrt(Math.pow(p3.x - p2.x, 2) + Math.pow(p3.y - p2.y, 2));
-  const c = Math.sqrt(Math.pow(p1.x - p3.x, 2) + Math.pow(p1.y - p3.y, 2));
-  const s = (a + b + c) / 2;
-  return Math.sqrt(s * (s - a) * (s - b) * (s - c));
+  const p4 = { x: p1.x + p3.x - p2.x, y: p1.y + p3.y - p2.y };
+  const base = Math.sqrt((p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2);
+  const height = Math.abs((p2.x - p1.x) * (p4.y - p1.y) - (p4.x - p1.x) * (p2.y - p1.y)) / base;
+  const area = base * height;
+  return area;
 }
 
 /**
