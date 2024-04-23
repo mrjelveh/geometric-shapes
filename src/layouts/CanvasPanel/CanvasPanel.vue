@@ -129,8 +129,8 @@ export default {
             const x = event.clientX - rect.left;
             const y = event.clientY - rect.top;
             const clickedPointIndex = this.selectedPoints.findIndex(
-                // Find the clicked point within a radius of 11 pixels
-                (point) => Math.sqrt(Math.pow(point.x - x, 2) + Math.pow(point.y - y, 2)) < 11
+                // Find the clicked point within a radius of 15 pixels for dragging (a bit larger than the point size to improve usability)
+                (point) => Math.sqrt(Math.pow(point.x - x, 2) + Math.pow(point.y - y, 2)) < 15
             );
             if (clickedPointIndex !== -1) {
                 this.isDragging = true;
