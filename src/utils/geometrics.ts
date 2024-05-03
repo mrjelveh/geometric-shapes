@@ -1,9 +1,7 @@
-
-
 /**
  * Represents a point in 2D space.
  */
-interface Point {
+export interface Point {
   x: number;
   y: number;
 }
@@ -85,7 +83,7 @@ export function drawCircle(
   selectedPoints: Point[]
 ): void {
   const [p1, p2, p3] = selectedPoints;
-  const parallelogramArea = calculateParallelogramArea(p1, p2, p3);
+  const parallelogramArea = calculateParallelogramArea(selectedPoints);
   const p4 = { x: p1.x + p3.x - p2.x, y: p1.y + p3.y - p2.y };
   const centerX = (p1.x + p2.x + p3.x + p4.x) / 4;
   const centerY = (p1.y + p2.y + p3.y + p4.y) / 4;
@@ -104,12 +102,9 @@ export function drawCircle(
  * @param p3 - The third point.
  * @returns The area of the parallelogram.
  */
-export function calculateParallelogramArea(
-  p1: Point,
-  p2: Point,
-  p3: Point
-): number {
-  const p4 = { x: p1.x + p3.x - p2.x, y: p1.y + p3.y - p2.y };
+export function calculateParallelogramArea(selectedPoints: Point[]): number {
+  const [p1, p2] = selectedPoints;
+  const p4 = calculateFourthPoint(selectedPoints)
   const base = Math.sqrt((p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2);
   const height = Math.abs((p2.x - p1.x) * (p4.y - p1.y) - (p4.x - p1.x) * (p2.y - p1.y)) / base;
   const area = base * height;
@@ -131,4 +126,9 @@ export function setCanvasSize(
 
   canvas.width = containerWidth;
   canvas.height = containerHeight;
+}
+
+function calculateFourthPoint(selectedPoints: Point[]): Point {
+  const [p1, p2, p3] = selectedPoints;
+  return { x: p1.x + p3.x - p2.x, y: p1.y + p3.y - p2.y };
 }

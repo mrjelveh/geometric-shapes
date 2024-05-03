@@ -1,6 +1,14 @@
 <template>
     <div class="canvas__container" ref="containerRef">
-        <canvas class="canvas__screen" id="canvas" ref="canvasRef"></canvas>
+        <canvas 
+        class="canvas__screen" 
+        id="canvas" 
+        ref="canvasRef"
+        @click="handleClick"
+        @mousedown="handleMouseDown"
+        @mousemove="handleMouseMove"
+        @mouseup="handleMouseUp"
+        ></canvas>
     </div>
     <div class="canvas__wrapper">
         <!-- Display a message if no points are selected -->
@@ -31,6 +39,7 @@ import {
     drawParallelogram,
     drawCircle,
     calculateParallelogramArea,
+    Point,
 } from '../../utils/geometrics.ts';
 import './CanvasPanel.scss';
 import { modalData } from '../../assets/staticData.ts';
@@ -47,7 +56,7 @@ export default {
         return {
             containerRef: null,
             canvasRef: null,
-            selectedPoints: [] as { x: number, y: number }[],
+            selectedPoints: [] as Point[],
             parallelogramArea: 0,
             circleArea: 0,
             canvas: {} as HTMLCanvasElement,
@@ -62,10 +71,6 @@ export default {
         // Initialize canvas and event listeners
         this.canvas = this.$refs.canvasRef as HTMLCanvasElement;
         this.ctx = this.canvas.getContext('2d');
-        this.canvas.addEventListener('click', this.handleClick);
-        this.canvas.addEventListener('mousedown', this.handleMouseDown);
-        this.canvas.addEventListener('mousemove', this.handleMouseMove);
-        this.canvas.addEventListener('mouseup', this.handleMouseUp);
         this.setCanvasSize();
         window.addEventListener('resize', this.setCanvasSize);
     },
@@ -113,9 +118,7 @@ export default {
             this.reset();
         },
         calculateAreas() {
-            // Calculate parallelogram area and circle area
-            const [p1, p2, p3] = this.selectedPoints;
-            this.parallelogramArea = calculateParallelogramArea(p1, p2, p3);
+            this.parallelogramArea = calculateParallelogramArea(this.selectedPoints);
             // Calculate circle area based on parallelogram area
             this.circleArea = Math.PI * Math.pow(Math.sqrt(this.parallelogramArea / Math.PI), 2);
         },
